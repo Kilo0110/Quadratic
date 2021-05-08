@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Quadratic Equation Solver</title>
+</head>
+<body>
+
+    <main>
+
+        <header>
+            <h1>Quadratic Equation Solver</h1>
+            <p>An easy-to-use, user-friendly site that takes care of all your quadratic equation problems</p>
+        </header>
+
+        <div class="wrapper">
+
+            <p id="instructions">
+                Input your question in the format <span>"ax2 + bx + c = 0"</span> as in the equation <span>"ax<sup>2</sup> + bx + c = 0"</span> or in the format <span>"ax2 + bx/c = 0"</span> as in the equation <span>"ax<sup>2</sup> + bx/c = 0</span>
+            </p>
+    
+            <form action="#">
+                <input type="text">
+                <button>Solve Equation</button>
+            </form>
+        
+            <p id="error"></p>
+            <p id="answer"></p>
+
+        </div>
+
+
+    </main>
+
+    <div class="menu">
+        
+        <div class="themes-container">
+            <input type="radio" name="themes" id="light-theme">
+            <label for="light-theme">Light Theme</label>
+        </div>
+
+        <div class="themes-container">
+            <input type="radio" name="themes" id="solarized-theme">
+            <label for="solarized-theme">Solarized</label>
+        </div>
+
+        <div class="themes-container">
+            <input type="radio" name="themes" id="nightime-theme">
+            <label for="nightime-theme">Nightime</label>
+        </div>
+
+        <div class="themes-container">
+            <input type="radio" name="themes" id="lights-out-theme">
+            <label for="lights-out-theme">Lights Out</label>
+        </div>
+
+    </div>
+
+    
+    <div id="hamburger">
+        <div class="line"></div>
+    </div>
+
+
+    <script src="js/main.js"></script>
+    <script src="js/themes.js"></script>
+    <script src="js/misc.js"></script>
+
+
+</body>
+</html>
