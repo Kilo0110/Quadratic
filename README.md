@@ -1,3 +1,1 @@
-# Quadratic
-
-it worked!!!
+This code is free to use for educational or personal purposes. However, no part of this code may be reproduced or stored in a retreivable system with the aim to sell the said part.
