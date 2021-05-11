@@ -11,14 +11,22 @@
     <main>
 
         <header>
-            <h1>Quadratic Equation Solver</h1>
-            <p>An easy-to-use, user-friendly site that takes care of all your quadratic equation problems</p>
-        </header>
 
-        <div class="wrapper">
+            <div id="header__info">
+                <h1>Quadratic Equation Solver</h1>
+                <p>An easy-to-use, user-friendly site that takes care of all your quadratic equation problems</p>
+            </div>
+
+            <div id="hamburger">
+                <div class="line"></div>
+            </div>
+
+        </header>   
+
+        <div class="main-container">
 
             <p id="instructions">
-                Input your question in the format <span>"ax2 + bx + c = 0"</span> as in the equation <span>"ax<sup>2</sup> + bx + c = 0"</span> or in the format <span>"ax2 + bx/c = 0"</span> as in the equation <span>"ax<sup>2</sup> + bx/c = 0</span>
+                Input your question in the format <span>"ax2 + bx + c = 0"</span> as in the equation <span>"ax<sup>2</sup> + bx + c = 0"</span> or in the format <span>"ax2 + bx/c = 0"</span> as in the equation <span>"ax<sup>2</sup> + bx/c = 0"</span>
             </p>
     
             <form action="#">
@@ -31,37 +39,28 @@
 
         </div>
 
-
     </main>
 
-    <div class="menu">
-        
-        <div class="themes-container">
-            <input type="radio" name="themes" id="light-theme">
-            <label for="light-theme">Light Theme</label>
+    <div class="wrapper">
+
+        <h2>Themes</h2>
+
+        <div class="themes-menu">
+            <button class="theme-btns active">Light Theme</button>
+            <button class="theme-btns">Solarized</button>
+            <button class="theme-btns">Nightime</button>
+            <button class="theme-btns">Lights Out</button>
         </div>
 
-        <div class="themes-container">
-            <input type="radio" name="themes" id="solarized-theme">
-            <label for="solarized-theme">Solarized</label>
-        </div>
-
-        <div class="themes-container">
-            <input type="radio" name="themes" id="nightime-theme">
-            <label for="nightime-theme">Nightime</label>
-        </div>
-
-        <div class="themes-container">
-            <input type="radio" name="themes" id="lights-out-theme">
-            <label for="lights-out-theme">Lights Out</label>
+        <div id="interactive-menu">
+            <a href="#">FAQs</a>
+            <a href="#">Rate Site</a>
         </div>
 
     </div>
 
-    
-    <div id="hamburger">
-        <div class="line"></div>
-    </div>
+    <div id="overlay"></div>
+
 
 
     <script src="js/main.js"></script>

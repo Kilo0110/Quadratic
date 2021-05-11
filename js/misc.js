@@ -1,7 +1,15 @@
 menuBtn = document.querySelector('#hamburger')
-menu = document.querySelector('.menu')
+menuWrapper = document.querySelector('.wrapper')
+overlay = document.querySelector('#overlay')
 
 menuBtn.addEventListener('click', ()=> {
     menuBtn.classList.toggle('clicked')
-    menu.classList.toggle('open')
+    menuWrapper.classList.toggle('show')
+    overlay.classList.toggle('show')
+})
+
+overlay.addEventListener('click', ()=> {
+    overlay.classList.toggle('show')
+    menuWrapper.classList.toggle('show')
+    menuBtn.classList.toggle('clicked')
 })

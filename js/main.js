@@ -1,3 +1,5 @@
+"Use Strict";
+
 const userInput = document.querySelector('input')
 const btn = document.querySelector('button')
 const error = document.querySelector('#error')
@@ -33,7 +35,7 @@ let rightHandSide
 let twoTermSolution
 let prohibitedRegEx = /[^a-zA-Z0-9+=-\s\.]+/ // matches every character that is NOT a member of the group in the square brackets
 let coefficientRegex = /\d+.*d*[^a-z]/i
-let squareRegex = /(?<=[a-z])2/ // matches the number 2 only if it is preceded by a letter (this is used to test for the power feature)
+let squareRegex = /(?<=[a-z])2/i // matches the number 2 only if it is preceded by a letter (this is used to test for the power feature)
 let numbersBeforeRegex = /\d*(?=[a-z])/i // matches all numbers that precede a letter
 let numbersAfterRegex = /[a-z](?!\d)/i // matches all letters only if it is not followed by a number (makes sure the 'b' term has no number following it)
 let variablesRegex = /[a-z]{1}/ig // matches all letters that appear in the input
@@ -57,7 +59,7 @@ const checkQuadraticState = function () {
 
 const checkVariableInB = function () {
     secondPart = equationParts[2]
-    let variablesRegex = /(?<=\d)[a-z]/ // matches all letters that follow a digit - will always return a singular item
+    let variablesRegex = /(?<=\d)[a-z]/i // matches all letters that follow a digit - will always return a singular item
 
     if (variablesRegex.test(secondPart) === true) { // if there is a variable in the second term
         hasVariable = true
@@ -80,17 +82,6 @@ const resolveCoefficientA = function () {
     if (firstPart.length === 2) { // if the length of the first part is two, let the coefficient = 1
         coefficientA = 1
     }
-
-/*     if (firstPart.length === 3) {
-
-        if (firstNegativeState === 0) {
-            coefficientA = -1
-        }
-
-        if (firstNegativeState === -1) {
-            coefficientA = 1
-        }
-    } */
 
     if (firstPart.length > 2) {
 
@@ -117,9 +108,9 @@ const resolveCoefficientB = function (partIndex, operatorIndex) {
     let secondTermValue = parseInt(secondPart.match(numbersBeforeRegex))
 
 
-    if (numbersAfterRegex.test(secondPart) === true) {
+    if (numbersAfterRegex.test(secondPart) === true) { // if the b part is valid
 
-        if (secondPart.length === 1) {
+        if (secondPart.length === 1) { // if the b part has only one term, then it logically must be either '1' or '-1'
 
             if (secondOperator === '-') {
                 coefficientB = -1
@@ -136,7 +127,7 @@ const resolveCoefficientB = function (partIndex, operatorIndex) {
             }
         }
 
-        if (secondPart.length > 1) {
+        if (secondPart.length > 1) { // if the b part has more than one term, then turn the numbers to a float
 
             if (secondOperator === '-') {
                 coefficientB = -secondTermValue
@@ -157,7 +148,7 @@ const resolveCoefficientB = function (partIndex, operatorIndex) {
         return coefficientB
     }
 
-    if (numbersAfterRegex.test(secondPart) === false) {
+    if (numbersAfterRegex.test(secondPart) === false) { // if there are numbers after the variable, raise an error
 
         showError(3)
 
@@ -169,7 +160,7 @@ const resolveCoefficientC = function (partIndex, operatorIndex) {
     thirdPart = equationParts[partIndex]
     thirdOperator = equationParts[operatorIndex]
 
-    if (alphabetRegex.test(thirdPart) === false) {
+    if (alphabetRegex.test(thirdPart) === false) { // if the c part has no alphabet(variables), then convert the numbers to positive or negative float as appropriate
 
         if (thirdOperator === '-') {
             coefficientC = -parseFloat(thirdPart)
@@ -188,10 +179,8 @@ const resolveCoefficientC = function (partIndex, operatorIndex) {
         return coefficientC
     }
 
-    if (alphabetRegex.test(thirdPart) === true) {
-        error.classList.remove('hidden')
-        error.textContent = errorMsgs[3]
-        return
+    if (alphabetRegex.test(thirdPart) === true) { // if the c part has as much as one variable, raise an error
+        showError(3)
     }
 }
 
@@ -264,6 +253,88 @@ const calculateRootsWithoutVariable = function (a, c) {
 
 }
 
+const performCalculation = function (input) {
+    equationParts = input.value.split(' ')
+
+    if (equationParts.length === 7) {
+        checkQuadraticState()
+
+        if (quadraticState === false) {
+            showError(2)
+        }
+
+        if (quadraticState === true) {
+            resolveCoefficientA()
+            resolveCoefficientB(2, 1)
+            resolveCoefficientC(4, 3)
+        }
+
+        let a,b,c
+        a = coefficientA
+        b = coefficientB
+        c = coefficientC
+
+        calculateRoots(a, b, c)
+
+        console.log(roots)
+
+        showRoots(roots[0], roots[1])
+
+    }
+
+    if (equationParts.length === 5) {
+        checkQuadraticState()
+
+        if (quadraticState === false) {
+            showError(2)
+        }
+
+        if (quadraticState === true) {
+            resolveCoefficientA()
+            checkVariableInB()
+
+            if (hasVariable === false) {
+                resolveCoefficientC(2, 1)
+
+                let a,c
+                a = coefficientA
+                c = coefficientC
+
+                calculateRootsWithoutVariable(a, c)
+
+                showRoots(roots[0], roots[1])
+
+            }
+
+            if (hasVariable === true) {
+
+                resolveCoefficientB(2, 1)
+
+                let a,b
+                a = coefficientA
+                b = coefficientB
+
+                console.log(b)
+
+                if ((typeof(a) === 'undefined') || (typeof(b) === 'undefined')) {
+                    showError(3)
+                }
+
+                if ((typeof(a) !== 'undefined') && (typeof(b) !== 'undefined')) {
+                    calculateRootsWithVariable(a, b)
+                    showRoots(roots[0], roots[1])
+                }
+
+            }
+        }
+    }
+
+    if ((equationParts.length !== 7) && (equationParts.length !== 5)) {
+
+        showError(3)
+    }
+}
+
 const showRoots = function (firstRoot, secondRoot) {
     error.classList.remove('show')
 
@@ -310,94 +381,30 @@ btn.addEventListener('click', ev => {
 
             let uniqueLetters = [...new Set(variablesArray)]
 
-            if (uniqueLetters.length > 1) {
-                showError(4)
-            }
-
+            console.log(uniqueLetters)
+            
             if (uniqueLetters.length < 1) {
                 showError(5)
             }
 
             if (uniqueLetters.length === 1) {
-                equationParts = userInput.value.split(' ')
+                performCalculation(userInput)
+            }
 
-                if (equationParts.length === 7) {
-                    checkQuadraticState()
+            if (uniqueLetters.length === 2) {
 
-                    if (quadraticState === false) {
-                        showError(2)
-                    }
-
-                    if (quadraticState === true) {
-                        resolveCoefficientA()
-                        resolveCoefficientB(2, 1)
-                        resolveCoefficientC(4, 3)
-                    }
-
-                    let a,b,c
-                    a = coefficientA
-                    b = coefficientB
-                    c = coefficientC
-
-                    calculateRoots(a, b, c)
-
-                    console.log(roots)
-
-                    showRoots(roots[0], roots[1])
-
+                if ((uniqueLetters[0] === uniqueLetters[1].toUpperCase()) || (uniqueLetters[0] === uniqueLetters[1].toLowerCase())) {
+                    performCalculation(userInput)
                 }
 
-                if (equationParts.length === 5) {
-                    checkQuadraticState()
-
-                    if (quadraticState === false) {
-                        showError(2)
-                    }
-
-                    if (quadraticState === true) {
-                        resolveCoefficientA()
-                        checkVariableInB()
-
-                        if (hasVariable === false) {
-                            resolveCoefficientC(2, 1)
-
-                            let a,c
-                            a = coefficientA
-                            c = coefficientC
-
-                            calculateRootsWithoutVariable(a, c)
-
-                            showRoots(roots[0], roots[1])
-
-                        }
-
-                        if (hasVariable === true) {
-
-                            resolveCoefficientB(2, 1)
-
-                            let a,b
-                            a = coefficientA
-                            b = coefficientB
-
-                            console.log(b)
-
-                            if ((typeof(a) === 'undefined') || (typeof(b) === 'undefined')) {
-                                showError(3)
-                            }
-
-                            if ((typeof(a) !== 'undefined') && (typeof(b) !== 'undefined')) {
-                                calculateRootsWithVariable(a, b)
-                                showRoots(roots[0], roots[1])
-                            }
-
-                        }
-                    }
+                if ((uniqueLetters[0] !== uniqueLetters[1].toUpperCase()) && (uniqueLetters[0] !== uniqueLetters[1].toLowerCase())) {
+                    showError(4)
                 }
 
-                if ((equationParts.length !== 7) && (equationParts.length !== 5)) {
+            }
 
-                    showError(3)
-                }
+            if (uniqueLetters.length >= 3) {
+                showError(4)
             }
 
         }
